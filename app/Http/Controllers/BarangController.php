@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,10 +14,8 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $item = Barang::all();
-        return Inertia::render('Barang/Index',[
-            'barang' => $item,
-        ]);
+        $barang = Barang::all();
+        return inertia('Barang/Index',compact('barang'));
     }
 
     /**
@@ -41,14 +40,15 @@ class BarangController extends Controller
             'stok' => ['required']
         ]);
 
-       if ($validateData) {
-         $check = Barang::create($validateData);
-       }
-       if ($check) {
-        session()->flash('success','Fery Punya Barang Nassa');
+        try{
+            Barang::create($validateData);
+        }catch(Exception $e){
+            session()->flash('error','Gagal!' . $e->getMessage()); 
+            return back();
+        }
+        session()->flash('success','Data Anda Berhasil Di Input');
         return to_route('barang.index');
-       }
-        return back()->with('error','Data Gagal Di Tambah');
+       
     }
 
     /**
@@ -64,7 +64,7 @@ class BarangController extends Controller
      */
     public function edit(Barang $barang)
     {
-        //
+        return inertia('Barang/Update', compact('barang'));
     }
 
     /**
@@ -81,6 +81,7 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
+        session()->flash('success','Data Berhasil Di Hapus!');
         return back();
     }
 }
