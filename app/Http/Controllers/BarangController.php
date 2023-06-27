@@ -43,7 +43,7 @@ class BarangController extends Controller
         try{
             Barang::create($validateData);
         }catch(Exception $e){
-            session()->flash('error','Gagal!' . $e->getMessage()); 
+            session()->flash('error','Data Gagal  Di Tambah' . $e->getMessage()); 
             return back();
         }
         session()->flash('success','Data Anda Berhasil Di Input');
@@ -56,7 +56,7 @@ class BarangController extends Controller
      */
     public function show(Barang $barang)
     {
-        //
+        return inertia('Barang/Show', compact('barang'));
     }
 
     /**
@@ -72,7 +72,23 @@ class BarangController extends Controller
      */
     public function update(Request $request, Barang $barang)
     {
-        //
+        $validateData =  $request->validate([
+                'kode_barang' => ['required'],
+                'nama_barang' => ['required'],
+                'kategori'    => ['required'],
+                'harga_jual'  => ['required'],
+                'harga_Beli'  => ['required'],
+                'stok'        => ['required']
+        ]);
+        
+        try {
+            $barang->update($validateData);
+        } catch (Exception $e) {
+           session()->flash('error','Data Gagal Di Ubah!');
+           return back();
+        }
+        session()->flash('success','Data Berhasil Di Ubah!');
+        return to_route('barang.index');
     }
 
     /**

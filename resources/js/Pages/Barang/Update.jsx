@@ -6,17 +6,21 @@ import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
 const Update = ({ auth, barang }) => {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        kode_barang: "",
-        nama_barang: "",
-        kategori: "",
-        harga_jual: "",
-        harga_beli: "",
-        stok: "",
+
+    const { data, setData,put, processing, errors, reset } = useForm({
+        ...barang
     });
+
+    const submit = async (e) => {
+        e.preventDefault();
+        put(route("barang.update",{id: barang.id}))
+    }
+
+
     return (
         <Authenticated user={auth.user}>
             <Head title="Edit Barang" />
+            <form onSubmit={submit}>
             <div className="container m-8 flex flex-col gap-4">
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden p-5">
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
@@ -91,7 +95,7 @@ const Update = ({ auth, barang }) => {
                         <TextInput
                             id="harga_beli"
                             name="harga_beli"
-                            value={data.harga_beli}
+                            value={data.harga_Beli}
                             className="mt-1 block w-full"
                             autoComplete="harga_beli"
                             isFocused={true}
@@ -127,6 +131,7 @@ const Update = ({ auth, barang }) => {
                             </div>
                 </div>
             </div>
+            </form>
         </Authenticated>
     );
 };
