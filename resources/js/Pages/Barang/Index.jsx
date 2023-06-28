@@ -1,21 +1,30 @@
 import Alert from "@/Components/Alert";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Head, Link, router } from "@inertiajs/react";
 
-export default function ViewStock({ auth, barang }) {
+const ViewStock = ({ auth, barang }) => {
+    const [searchTerm, setSearchTerm] = useState("");
+
     const handleDelete = (id) => {
-        if (!confirm("apakah anda yakit?")) return;
+        if (!confirm("Apakah Anda yakin?")) return;
         router.delete(route("barang.destroy", id));
     };
 
+    const filteredBarang = barang.filter((item) => {
+        return (
+            item.nama_barang.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.kode_barang.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    });
+
     return (
-        <Authenticated
-            user={auth.user}
-        >
+        <Authenticated user={auth.user}>
             <Head title="Detail Barang" />
             <h2 className=" p-6 font-semibold text-xl text-gray-800 leading-tight ">
-                    Detail Barang
-                </h2>
+                Detail Barang
+            </h2>
+            <div className=""></div>
             <Alert />
             <div className="bg-white rounded-xl shadow-md ">
                 <div className="flex items-center justify-between bg-gradient-to-tr from-blue-600 to-blue-400 text-white px-6 py-4 rounded-t-xl">
@@ -29,7 +38,22 @@ export default function ViewStock({ auth, barang }) {
                         Tambah
                     </Link>
                 </div>
-                <div className="p-6 overflow-x-scroll">
+                <div className="p-6 overflow-x-scroll right-8">
+                    <div className="mb-4 w-96 ">
+                        <label htmlFor="search" className="block font-semibold">
+                            Pencarian Barang:
+                        </label>
+                        <div className="py-2">
+                        <input
+                            type="text"
+                            id="search"
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            placeholder="Cari barang..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        </div>
+                    </div>
                     <table className="w-full min-w-[640px] table-auto">
                         <thead>
                             <tr>
@@ -71,7 +95,7 @@ export default function ViewStock({ auth, barang }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {barang?.map((item, i) => (
+                            {filteredBarang.map((item, i) => (
                                 <tr key={i} className="text-center">
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         {item.kode_barang}
@@ -94,7 +118,7 @@ export default function ViewStock({ auth, barang }) {
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         <Link
                                             className="bg-blue-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                                            href={route("barang.edit",item.id)}
+                                            href={route("barang.edit", item.id)}
                                         >
                                             Edit
                                         </Link>
@@ -117,4 +141,6 @@ export default function ViewStock({ auth, barang }) {
             </div>
         </Authenticated>
     );
-}
+};
+
+export default ViewStock;
