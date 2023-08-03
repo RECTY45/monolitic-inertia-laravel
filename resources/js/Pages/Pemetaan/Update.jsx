@@ -5,120 +5,125 @@ import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-const Update = ({ auth, barang }) => {
+const Update = ({ auth, pemetaan }) => {
 
     const { data, setData,put, processing, errors, reset } = useForm({
-        ...barang
+        ...pemetaan
     });
 
     const submit = async (e) => {
         e.preventDefault();
-        put(route("barang.update",{id: barang.id}))
+        put(route("pemetaan.update",{id: pemetaan.id}))
     }
 
 
     return (
         <Authenticated user={auth.user}>
-            <Head title="Edit Barang" />
+            <Head title="Edit Lokasi Pemetaan" />
             <form onSubmit={submit}>
-            <div className="container m-8 flex flex-col gap-4">
+            <div className="container mx-48 my-32 flex flex-col">
+            <h2 className=" p-5 font-semibold text-xl text-gray-800 leading-tight">
+                Kelola Edit Data Lokasi Pemetaan
+            </h2>
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden p-5">
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Edit Barang
+                        Edit Lokasi
                     </h2>
+                    <div className="grid grid-cols-2 gap-2">
                     <div className="mt-4">
-                        <InputLabel htmlFor="kode_barang" value="Kode Barang" />
+                        <InputLabel htmlFor="bahan_baku" value="Bahan Baku" />
                         <TextInput
-                            id="kode_barang"
-                            name="kode_barang"
-                            value={data.kode_barang}
+                            id="bahan_baku"
+                            name="bahan_baku"
+                            value={ data.bahan_baku}
                             className="mt-1 block w-full"
-                            autoComplete="kode_barang"
+                            autoComplete="bahan_baku"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("kode_barang", e.target.value)
+                                setData("bahan_baku", e.target.value)
                             }
                         />
 
                         <InputError
-                            message={errors.kode_barang}
+                            message={errors.bahan_baku}
                             className="mt-2"
                         />
                     </div>
                     <div className="mt-4">
-                        <InputLabel htmlFor="nama_barang" value="Nama Barang" />
+                        <InputLabel htmlFor="gambar" value="Gambar" />
                         <TextInput
-                            id="nama_barang"
-                            name="nama_barang"
-                            value={data.nama_barang}
+                            id="gambar"
+                            name="gambar"
+                            value={data.gambar}
                             className="mt-1 block w-full"
-                            autoComplete="nama_barang"
+                            autoComplete="gambar"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("nama_barang", e.target.value)
+                                setData("gambar", e.target.value)
                             }
                         />
                         <InputError message={errors.nama_barang} />
                     </div>
                     <div className="mt-4">
-                        <InputLabel htmlFor="kategori" value="Kategori" />
+                        <InputLabel htmlFor="latitude" value="Latitude" />
                         <TextInput
-                            id="kategori"
-                            name="kategori"
-                            value={data.kategori}
+                            id="latitude"
+                            name="latitude"
+                            value={data.latitude}
                             className="mt-1 block w-full"
-                            autoComplete="kategori"
+                            autoComplete="latitude"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("kategori", e.target.value)
+                                setData("latitude", e.target.value)
                             }
                         />
-                        <InputError message={errors.kategori} />
+                        <InputError message={errors.latitude} />
                     </div>
                     <div className="mt-4">
-                        <InputLabel htmlFor="harga_jual" value="Harga Jual" />
+                        <InputLabel htmlFor="longitude" value="Longitude" />
                         <TextInput
-                            id="harga_jual"
-                            name="harga_jual"
-                            value={data.harga_jual}
+                            id="longitude"
+                            name="longitude"
+                            value={data.longitude}
                             className="mt-1 block w-full"
-                            autoComplete="harga_jual"
+                            autoComplete="longitude"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("harga_jual", e.target.value)
+                                setData("longitude", e.target.value)
                             }
                         />
-                        <InputError message={errors.harga_jual} />
+                        <InputError message={errors.longitude} />
                     </div>
                     <div className="mt-4">
-                        <InputLabel htmlFor="harga_beli" value="Harga Beli" />
+                        <InputLabel htmlFor="lokasi" value="Lokasi" />
                         <TextInput
-                            id="harga_beli"
-                            name="harga_beli"
-                            value={data.harga_Beli}
+                            id="lokasi"
+                            name="lokasi"
+                            value={data.lokasi}
                             className="mt-1 block w-full"
-                            autoComplete="harga_beli"
+                            autoComplete="lokasi"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("harga_beli", e.target.value)
+                                setData("lokasi", e.target.value)
                             }
                         />
-                        <InputError message={errors.harga_beli} />
+                        <InputError message={errors.lokasi} />
                     </div>
                     <div className="mt-4">
-                        <InputLabel htmlFor="stok" value="Stok Barang" />
+                        <InputLabel htmlFor="keterangan" value="Keterangan" />
                         <TextInput
-                            id="stok"
-                            name="stok"
-                            value={data.stok}
+                            id="keterangan"
+                            name="keterangan"
+                            value={data.keterangan}
                             className="mt-1 block w-full"
-                            autoComplete="stok"
+                            autoComplete="keterangan"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("stok", e.target.value)
+                                setData("keterangan", e.target.value)
                             }
                         />
-                        <InputError message={errors.stok} />
+                        <InputError message={errors.keterangan} />
+                    </div>
                     </div>
                 <div className="flex items-center  mt-4">
                                 <PrimaryButton

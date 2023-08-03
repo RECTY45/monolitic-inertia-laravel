@@ -1,5 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import { Icon } from "leaflet";
+export const icon = new Icon({
+    iconUrl: "../Components/images/marker.png",
+    iconSize: [25, 25]
+  });
 
 export default function Dashboard({ auth }) {
     return (
@@ -19,8 +25,8 @@ export default function Dashboard({ auth }) {
                         <div className="p-6 text-gray-900">You're logged in!</div>
                     </div>
                 </div>
-                
             </div>
+    
         </AuthenticatedLayout>
     );
 }

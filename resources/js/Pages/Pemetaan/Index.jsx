@@ -3,37 +3,36 @@ import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 
-const ViewStock = ({ auth, barang }) => {
+const ViewStock = ({ auth, items }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleDelete = (id) => {
         if (!confirm("Apakah Anda yakin?")) return;
-        router.delete(route("barang.destroy", id));
+        router.delete(route("pemetaan.destroy", id));
     };
 
-    const filteredBarang = barang.filter((item) => {
+    const filteredPemetaan = items.filter((item) => {
         return (
-            item.nama_barang.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.kode_barang.toLowerCase().includes(searchTerm.toLowerCase())
+            item.bahan_baku.toLowerCase().includes(searchTerm.toLowerCase())
         );
     });
 
     return (
         <Authenticated user={auth.user}>
-            <Head title="Detail Barang" />
-            <h2 className=" p-6 font-semibold text-xl text-gray-800 leading-tight ">
-                Detail Barang
+            <Head title="Kelola Lokasi Pemetaan" />
+            <h2 className=" p-5 font-semibold text-xl text-gray-800 leading-tight">
+                Kelola Data Lokasi Pemetaan
             </h2>
             <div className=""></div>
             <Alert />
             <div className="bg-white rounded-xl shadow-md ">
                 <div className="flex items-center justify-between bg-gradient-to-tr from-blue-600 to-blue-400 text-white px-6 py-4 rounded-t-xl">
                     <h6 className="text-base font-semibold leading-relaxed">
-                        Detail Barang
+                        Detail Lokasi
                     </h6>
                     <Link
                         className="bg-red-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                        href={route("barang.create")}
+                        href={route("pemetaan.create")}
                     >
                         Tambah
                     </Link>
@@ -41,14 +40,14 @@ const ViewStock = ({ auth, barang }) => {
                 <div className="p-6 overflow-x-scroll right-8">
                     <div className="mb-4 w-96 ">
                         <label htmlFor="search" className="block font-semibold">
-                            Pencarian Barang:
+                            Pencarian Lokasi :
                         </label>
                         <div className="py-2">
                         <input
                             type="text"
                             id="search"
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            placeholder="Cari barang..."
+                            placeholder="Cari Bahan Baku..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -59,32 +58,37 @@ const ViewStock = ({ auth, barang }) => {
                             <tr>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Kode Barang
+                                        No
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Nama Barang
+                                        Bahan Baku
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Kategori
+                                        Gambar
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Harga Jual
+                                            Latitude
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Harga Beli
+                                        Longitude
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                        Stok
+                                       Lokasi
+                                    </p>
+                                </th>
+                                <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
+                                    <p className="text-[11px] font-bold uppercase text-blue-gray-400">
+                                        Keterangan
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
@@ -95,30 +99,33 @@ const ViewStock = ({ auth, barang }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredBarang.map((item, i) => (
+                            {filteredPemetaan.map((item, i) => (
                                 <tr key={i} className="text-center">
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.kode_barang}
+                                        {i + 1 }
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.nama_barang}
+                                        {item.bahan_baku}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.kategori}
+                                        {item.gambar}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.harga_jual}
+                                        {item.latitude}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.harga_Beli}
+                                        {item.longitude}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.stok}
+                                        {item.lokasi}
+                                    </td>
+                                    <td className="py-3 px-5 border-b border-blue-gray-50">
+                                        {item.keterangan}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         <Link
                                             className="bg-blue-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                                            href={route("barang.edit", item.id)}
+                                            href={route("pemetaan.edit", item.id)}
                                         >
                                             Edit
                                         </Link>
