@@ -3,6 +3,10 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm } from "@inertiajs/react";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
 export default function CreatePemetaan({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         bahan_baku: "",
@@ -12,6 +16,9 @@ export default function CreatePemetaan({ auth }) {
         lokasi: "",
         keterangan: "",
     });
+    
+    const position = [-5.143759051537124, 119.40061707043272];
+
     const submit = (e) => {
         e.preventDefault();
         post(route("pemetaan.store"));
@@ -20,10 +27,28 @@ export default function CreatePemetaan({ auth }) {
         <Authenticated user={auth.user}>
             <Head title="Tambah Lokasi" />
             <>
-                <form onSubmit={submit}>
-             
-                    <div className="container mx-48 my-32 flex flex-col">
-
+            <form onSubmit={submit} className="mx-auto mb-4">
+                <div className="container mx-auto flex flex-col">
+                        <div className="py-3 grid grid-cols-12">
+                            <div className="col-span-12">
+                                <MapContainer
+                                    center={position}
+                                    zoom={13}
+                                    scrollWheelZoom={false}
+                                >
+                                    <TileLayer
+                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                    <Marker position={position}>
+                                        <Popup>
+                                            A pretty CSS3 popup. <br /> Easily
+                                            customizable.
+                                        </Popup>
+                                    </Marker>
+                                </MapContainer>
+                            </div>
+                        </div>
                         <h2 className=" p-5 font-semibold text-xl text-gray-800 leading-tight">
                             Kelola Tambah Data Lokasi
                         </h2>
@@ -46,9 +71,11 @@ export default function CreatePemetaan({ auth }) {
                                         autoComplete="bahan_baku"
                                         isFocused={true}
                                         onChange={(e) =>
-                                            setData("bahan_baku", e.target.value)
+                                            setData(
+                                                "bahan_baku",
+                                                e.target.value
+                                            )
                                         }
-
                                     />
 
                                     <InputError
@@ -73,7 +100,6 @@ export default function CreatePemetaan({ auth }) {
                                         onChange={(e) =>
                                             setData("gambar", e.target.value)
                                         }
-
                                     />
 
                                     <InputError
@@ -98,7 +124,6 @@ export default function CreatePemetaan({ auth }) {
                                         onChange={(e) =>
                                             setData("latitude", e.target.value)
                                         }
-
                                     />
 
                                     <InputError
@@ -123,7 +148,6 @@ export default function CreatePemetaan({ auth }) {
                                         onChange={(e) =>
                                             setData("longitude", e.target.value)
                                         }
-
                                     />
 
                                     <InputError
@@ -148,7 +172,6 @@ export default function CreatePemetaan({ auth }) {
                                         onChange={(e) =>
                                             setData("lokasi", e.target.value)
                                         }
-
                                     />
 
                                     <InputError
@@ -158,7 +181,10 @@ export default function CreatePemetaan({ auth }) {
                                 </div>
 
                                 <div className="mt-4">
-                                    <InputLabel htmlFor="keterangan" value="Keterangan" />
+                                    <InputLabel
+                                        htmlFor="keterangan"
+                                        value="Keterangan"
+                                    />
 
                                     <TextInput
                                         id="keterangan"
@@ -168,9 +194,11 @@ export default function CreatePemetaan({ auth }) {
                                         className="mt-1 block w-full"
                                         autoComplete="keterangan"
                                         onChange={(e) =>
-                                            setData("keterangan", e.target.value)
+                                            setData(
+                                                "keterangan",
+                                                e.target.value
+                                            )
                                         }
-
                                     />
 
                                     <InputError
@@ -190,7 +218,7 @@ export default function CreatePemetaan({ auth }) {
                             </div>
                         </div>
                     </div>
-                </form>
+            </form>
             </>
         </Authenticated>
     );

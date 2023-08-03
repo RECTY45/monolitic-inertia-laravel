@@ -20,12 +20,11 @@ const ViewStock = ({ auth, items }) => {
     return (
         <Authenticated user={auth.user}>
             <Head title="Kelola Lokasi Pemetaan" />
-            <h2 className=" p-5 font-semibold text-xl text-gray-800 leading-tight">
+            <h2 className="p-5 font-semibold text-xl text-gray-800 leading-tight">
                 Kelola Data Lokasi Pemetaan
             </h2>
-            <div className=""></div>
             <Alert />
-            <div className="bg-white rounded-xl shadow-md ">
+            <div className="rounded-xl shadow-md mx-3 bg-white">
                 <div className="flex items-center justify-between bg-gradient-to-tr from-blue-600 to-blue-400 text-white px-6 py-4 rounded-t-xl">
                     <h6 className="text-base font-semibold leading-relaxed">
                         Detail Lokasi
@@ -43,14 +42,14 @@ const ViewStock = ({ auth, items }) => {
                             Pencarian Lokasi :
                         </label>
                         <div className="py-2">
-                        <input
-                            type="text"
-                            id="search"
-                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            placeholder="Cari Bahan Baku..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                            <input
+                                type="text"
+                                id="search"
+                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                                placeholder="Cari Bahan Baku..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
                     </div>
                     <table className="w-full min-w-[640px] table-auto">
@@ -73,7 +72,7 @@ const ViewStock = ({ auth, items }) => {
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                            Latitude
+                                        Latitude
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
@@ -83,7 +82,7 @@ const ViewStock = ({ auth, items }) => {
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
                                     <p className="text-[11px] font-bold uppercase text-blue-gray-400">
-                                       Lokasi
+                                        Lokasi
                                     </p>
                                 </th>
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-center">
@@ -102,7 +101,7 @@ const ViewStock = ({ auth, items }) => {
                             {filteredPemetaan.map((item, i) => (
                                 <tr key={i} className="text-center">
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {i + 1 }
+                                        {i + 1}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         {item.bahan_baku}
@@ -125,7 +124,10 @@ const ViewStock = ({ auth, items }) => {
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         <Link
                                             className="bg-blue-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                                            href={route("pemetaan.edit", item.id)}
+                                            href={route(
+                                                "pemetaan.edit",
+                                                item.id
+                                            )}
                                         >
                                             Edit
                                         </Link>
