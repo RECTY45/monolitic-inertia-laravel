@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemetaan;
+use Exception;
 use Illuminate\Http\Request;
 
 class PemetaanController extends Controller
@@ -12,8 +13,19 @@ class PemetaanController extends Controller
      */
     public function index()
     {
-        $items = Pemetaan::all();
-        return inertia('Pemetaan/Index',compact('items'));
+
+        $query = request('q');
+        $pemetaan = Pemetaan::query()
+            ->when($query, function($data, $value){
+                $data->where('bahan_baku', 'LIKE', "%{$value}%")
+                    ->orWhere('lokasi', 'LIKE', "%{$value}%")
+                    ->orWhere('keterangan', 'LIKE', "%{$value}%");
+            })
+            ->latest()
+            ->get();
+
+
+        return inertia('Pemetaan/Index',compact('pemetaan'));
     }
 
     /**
@@ -37,7 +49,9 @@ class PemetaanController extends Controller
             'lokasi' => ['required'],
             'keterangan' => ['required']
         ]);
-
+        if($request->file('gambar')){
+            $validateData['gambar'] = $request->file('gambar')->store('gambar/pemetaan');
+        }
         try{
             Pemetaan::create($validateData);
         }catch(Exception $e){
@@ -69,14 +83,19 @@ class PemetaanController extends Controller
      */
     public function update(Request $request, Pemetaan $pemetaan)
     {
+
         $validateData = $request->validate([
             'bahan_baku' => ['required'],
-            'gambar' => ['required'],
+            'gambar' => ['required','image','max:2048'],
             'latitude' => ['required'],
             'longitude' => ['required'],
             'lokasi' => ['required'],
             'keterangan' => ['required']
         ]);
+
+        if($request->file('gambar')){
+            $validateData['gambar'] = $request->file('gambar')->store('gambar/pemetaan');
+        }
 
         try {
             $pemetaan->update($validateData);

@@ -1,16 +1,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Icon } from "leaflet";
+import ClickLocation from "@/Components/leaflet/click-location";
 import "leaflet/dist/leaflet.css";
+import Filter from "@/Components/datatable/filter";
 
-export const icon = new Icon({
-    iconUrl: "../Components/images/marker.png",
-    iconSize: [25, 25],
-});
-
-export default function Dashboard({ auth }) {
-    const position = [-5.143759051537124, 119.40061707043272];
+export default function Dashboard({ auth, pemetaan }) {
 
     return (
         <AuthenticatedLayout
@@ -25,33 +21,42 @@ export default function Dashboard({ auth }) {
 
             <div className="py-5">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            You're logged in!
+                        <Filter/>
                         </div>
                     </div>
-                </div>
             </div>
 
-            <div className="py-3 grid grid-cols-12">
-                <div className="col-span-12">
-                    <MapContainer
-                        center={position}
-                        zoom={13}
-                        scrollWheelZoom={false}
-                    >
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={position}>
-                            <Popup>
-                                A pretty CSS3 popup. <br /> Easily customizable.
-                            </Popup>
-                        </Marker>
-                    </MapContainer>
-                </div>
-            </div>
+            <MapContainer
+                center={[-5.143759051537124, 119.40061707043272]}
+                zoom={5}
+                scrollWheelZoom={false}
+            >
+                <TileLayer
+                      url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
+                      subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                />
+              
+               {pemetaan && pemetaan.map((item, i) => (
+                <React.Fragment key={i}>
+                    <Marker position={{lat: item.latitude, lng: item.longitude}}>
+                        <Popup  >
+                         <ul>
+                            <li className="text-center">  
+                                <div className="flex justify-center py-5">
+                            <img className="md:w-[50px] md:h-[50px] object-fit-cover rounded-full" src={`http://127.0.0.1:8000/storage/${item.gambar}`} alt=""/>
+                                </div>
+                            </li>
+                            <li className="mb-2">Tempat : {item.lokasi}</li>
+                            <li className="mb-2">Bahan Baku : {item.bahan_baku}</li>
+                            <li className="mb-2">Keterangan : {item.keterangan}</li>
+                         </ul>
+                        </Popup>
+                    </Marker>
+                </React.Fragment>
+               ))}
+              
+            </MapContainer>
         </AuthenticatedLayout>
     );
 }

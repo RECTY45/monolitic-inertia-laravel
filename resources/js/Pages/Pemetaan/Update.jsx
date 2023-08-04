@@ -7,13 +7,19 @@ import { Head, useForm } from "@inertiajs/react";
 
 const Update = ({ auth, pemetaan }) => {
 
-    const { data, setData,put, processing, errors, reset } = useForm({
-        ...pemetaan
+    const { data, setData,post, processing, errors, reset } = useForm({
+        _method: 'patch',
+        bahan_baku: pemetaan.bahan_baku,
+        gambar: "",
+        latitude: pemetaan.latitude,
+        longitude: pemetaan.longitude,
+        lokasi: pemetaan.lokasi,
+        keterangan: pemetaan.keterangan,
     });
 
     const submit = async (e) => {
         e.preventDefault();
-        put(route("pemetaan.update",{id: pemetaan.id}))
+        post(route("pemetaan.update",{id: pemetaan.id}))
     }
 
 
@@ -53,13 +59,13 @@ const Update = ({ auth, pemetaan }) => {
                         <InputLabel htmlFor="gambar" value="Gambar" />
                         <TextInput
                             id="gambar"
+                            type="file"
                             name="gambar"
-                            value={data.gambar}
                             className="mt-1 block w-full"
                             autoComplete="gambar"
                             isFocused={true}
                             onChange={(e) =>
-                                setData("gambar", e.target.value)
+                                setData("gambar", e.target.files[0])
                             }
                         />
                         <InputError message={errors.nama_barang} />

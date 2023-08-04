@@ -2,20 +2,10 @@ import Alert from "@/Components/Alert";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
+import Filter from "@/Components/datatable/filter";
 
-const ViewStock = ({ auth, items }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleDelete = (id) => {
-        if (!confirm("Apakah Anda yakin?")) return;
-        router.delete(route("pemetaan.destroy", id));
-    };
-
-    const filteredPemetaan = items.filter((item) => {
-        return (
-            item.bahan_baku.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    });
+const ViewStock = ({ auth, pemetaan }) => {
+  
 
     return (
         <Authenticated user={auth.user}>
@@ -37,21 +27,7 @@ const ViewStock = ({ auth, items }) => {
                     </Link>
                 </div>
                 <div className="p-6 overflow-x-scroll right-8">
-                    <div className="mb-4 w-96 ">
-                        <label htmlFor="search" className="block font-semibold">
-                            Pencarian Lokasi :
-                        </label>
-                        <div className="py-2">
-                            <input
-                                type="text"
-                                id="search"
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                                placeholder="Cari Bahan Baku..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                    </div>
+                   <Filter  />
                     <table className="w-full min-w-[640px] table-auto">
                         <thead>
                             <tr>
@@ -98,7 +74,7 @@ const ViewStock = ({ auth, items }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredPemetaan.map((item, i) => (
+                            {pemetaan.map((item, i) => (
                                 <tr key={i} className="text-center">
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         {i + 1}
@@ -107,7 +83,7 @@ const ViewStock = ({ auth, items }) => {
                                         {item.bahan_baku}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                        {item.gambar}
+                                    <img src={`http://127.0.0.1:8000/storage/${item.gambar}`} alt="" />
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         {item.latitude}
