@@ -83,7 +83,7 @@ const ViewStock = ({ auth, pemetaan }) => {
                                         {item.bahan_baku}
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
-                                    <img src={`http://127.0.0.1:8000/storage/${item.gambar}`} alt="" />
+                                    <img src={`http://127.0.0.1:8000/storage/${item.gambar}`} className="md:w-[50px] md:h-[50px] " />
                                     </td>
                                     <td className="py-3 px-5 border-b border-blue-gray-50">
                                         {item.latitude}
